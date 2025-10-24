@@ -57,7 +57,11 @@ setup(
     maintainer_email='isaac-ros-maintainers@nvidia.com',
     description='Tools for inspecting and verifying TensorList messages',
     license='Apache-2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest'
+        ]
+    },
     entry_points={
         'console_scripts': [
             'tensor_inspector = isaac_ros_tensor_inspector.tensor_inspector:main'
