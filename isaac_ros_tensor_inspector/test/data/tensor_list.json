@@ -1,0 +1,17 @@
+{
+  "header": {
+    "frame_id": ""
+  },
+  "tensors": [
+    {
+      "name": "test_tensor",
+      "shape": {
+        "rank": 1,
+        "dims": [3]
+      },
+      "data_type": 9,
+      "strides": [4],
+      "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    }
+  ]
+}

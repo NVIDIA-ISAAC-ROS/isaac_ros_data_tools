@@ -31,8 +31,8 @@ def compare(
     rel_tol: float,
     abs_tol: float
 ):
-    tensor_list1 = np.load(tensor1_path, allow_pickle=True)
-    tensor_list2 = np.load(tensor2_path, allow_pickle=True)
+    tensor_list1 = np.load(tensor1_path, allow_pickle=False)
+    tensor_list2 = np.load(tensor2_path, allow_pickle=False)
 
     assert len(tensor_list1.keys()) == len(tensor_list2.keys()), \
         'Tensor lists are not the same length'
