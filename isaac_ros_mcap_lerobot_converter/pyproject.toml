@@ -1,0 +1,50 @@
+# SPDX-FileCopyrightText: NVIDIA CORPORATION & AFFILIATES
+# Copyright (c) 2026 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+# SPDX-License-Identifier: Apache-2.0
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "isaac_ros_mcap_lerobot_converter"
+version = "4.2.0"
+description = "Converts MCAP rosbags directly into LeRobot datasets."
+license = { text = "Apache-2.0" }
+# NOTE: `requires-python` is intentionally omitted. colcon's
+# colcon-python-setup-py parses `setup.py --dry-run` stdout with
+# ast.literal_eval, and setuptools renders `requires-python` as
+# `<SpecifierSet('>=3.10')>` — a repr, not a Python literal — which
+# breaks the parse. See isaac-ros-premerge build #24 for the failure.
+# The minimum Python version is documented in README.md instead.
+authors = [
+    { name = "Isaac ROS Maintainers", email = "isaac-ros-maintainers@nvidia.com" },
+]
+dependencies = [
+    "av",
+    "lerobot==0.3.2",
+    "numpy",
+    "rosbags>=0.10.11",
+]
+
+[project.optional-dependencies]
+# Pytest is kept in the extras so colcon's pytest step matches (it wins
+# over the unittest step by priority and match-gates on this entry).
+# With no `test_*.py` files under `testpaths` below, pytest collects
+# nothing under `colcon test` and exits with code 5, which colcon's
+# pytest handler treats as success. Manual `pytest test/foo.py` still
+# works because an explicit path argument overrides testpaths.
+test = ["pytest"]
+
+[project.scripts]
+mcap-to-lerobot = "isaac_ros_mcap_lerobot_converter.mcap_to_lerobot:main"
+
+[tool.setuptools]
+packages = ["isaac_ros_mcap_lerobot_converter"]
+
+[tool.pytest.ini_options]
+# Point default discovery at the package sources (no test files there)
+# so colcon-invoked `pytest` collects zero tests. The real suite under
+# test/ is still runnable via `pytest test/test_mcap_to_lerobot_converter.py`.
+# Colcon-integrated tests will be restored in a follow-up MR.
+testpaths = ["isaac_ros_mcap_lerobot_converter"]
