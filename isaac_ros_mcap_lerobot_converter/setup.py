@@ -24,6 +24,7 @@ from setuptools import setup
 package_name = 'isaac_ros_mcap_lerobot_converter'
 
 setup(
+    packages=[package_name],
     data_files=[
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
