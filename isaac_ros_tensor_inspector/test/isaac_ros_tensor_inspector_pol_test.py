@@ -19,12 +19,13 @@ import os
 import pathlib
 import time
 
-from isaac_ros_tensor_list_interfaces.msg import Tensor, TensorList, TensorShape
+from isaac_ros_tensor_msgs.msg import TensorList
 from isaac_ros_test import IsaacROSBaseTest, JSONConversion
 from launch_ros.actions import Node
 
 import pytest
 import rclpy
+from tensor_msgs.msg import ExperimentalTensor
 
 
 @pytest.mark.rostest
@@ -62,16 +63,15 @@ def load_tensor_list_from_json(json_filepath: pathlib.Path) -> TensorList:
     tensor_list = TensorList()
     tensor_list.header.frame_id = tensor_list_json['header']['frame_id']
 
+    tensor_list.names = tensor_list_json['names']
     for tensor_json in tensor_list_json['tensors']:
-        tensor = Tensor()
-        tensor.name = tensor_json['name']
-
-        tensor.shape = TensorShape()
-        tensor.shape.rank = tensor_json['shape']['rank']
-        tensor.shape.dims = tensor_json['shape']['dims']
-
-        tensor.data_type = tensor_json['data_type']
+        tensor = ExperimentalTensor()
+        tensor.dtype_code = tensor_json['dtype_code']
+        tensor.dtype_bits = tensor_json['dtype_bits']
+        tensor.dtype_lanes = tensor_json['dtype_lanes']
+        tensor.shape = tensor_json['shape']
         tensor.strides = tensor_json['strides']
+        tensor.byte_offset = tensor_json['byte_offset']
         tensor.data = bytes(tensor_json['data'])
 
         tensor_list.tensors.append(tensor)
@@ -124,9 +124,15 @@ class IsaacROSTensorInspectorPipelineTest(IsaacROSBaseTest):
             # Make sure that at least one tensor was found
             self.assertGreaterEqual(len(tensor_list_actual.tensors), 1,
                                     "Didn't find at least 1 tensor in tensor list!")
+            self.assertEqual(tensor_list_actual.names, ['test_tensor'])
 
             for tensor in tensor_list_actual.tensors:
-                self.assertEqual(tensor.data_type, 9)  # 9 = float32
+                self.assertEqual(tensor.dtype_code, 2)
+                self.assertEqual(tensor.dtype_bits, 32)
+                self.assertEqual(tensor.dtype_lanes, 1)
+                self.assertEqual(list(tensor.shape), [3])
+                self.assertEqual(list(tensor.strides), [])
+                self.assertEqual(tensor.byte_offset, 0)
 
                 # Allow for 2 bytes of error in data
                 self.assertAlmostEqual(
