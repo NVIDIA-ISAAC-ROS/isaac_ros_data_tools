@@ -17,41 +17,38 @@
 
 import struct
 
-from isaac_ros_tensor_list_interfaces.msg import Tensor, TensorList
+from isaac_ros_tensor_msgs.msg import TensorList
 import numpy as np
 import rclpy
 from rclpy.node import Node
+from tensor_msgs.msg import ExperimentalTensor
 
 
 class TensorInspectorNode(Node):
-    # Conversion map from Tensor.msg's data types to Python types
     MSG_TO_PYTHON_MAP = {
-        # data_type_number : ('struct_specifier', num_bytes)
-        1:  ('b', 1),  # int8
-        2:  ('B', 1),  # uint8
-        3:  ('h', 2),  # int16
-        4:  ('H', 2),  # uint16
-        5:  ('i', 4),  # int32
-        6:  ('I', 4),  # uint32
-        7:  ('q', 8),  # int64
-        8:  ('Q', 8),  # uint64
-        9:  ('f', 4),  # float32
-        10: ('d', 8)   # float64
+        (0, 8, 1):  ('b', 1),
+        (1, 8, 1):  ('B', 1),
+        (0, 16, 1): ('h', 2),
+        (1, 16, 1): ('H', 2),
+        (0, 32, 1): ('i', 4),
+        (1, 32, 1): ('I', 4),
+        (0, 64, 1): ('q', 8),
+        (1, 64, 1): ('Q', 8),
+        (2, 32, 1): ('f', 4),
+        (2, 64, 1): ('d', 8),
     }
 
-    # Conversion map from Numpy types to Tensor.msg's data types
     PYTHON_TO_MSG_MAP = {
-        # dtype : data_type_number
-        np.dtype('int8'):    1,
-        np.dtype('uint8'):   2,
-        np.dtype('int16'):   3,
-        np.dtype('uint16'):  4,
-        np.dtype('int32'):   5,
-        np.dtype('uint32'):  6,
-        np.dtype('int64'):   7,
-        np.dtype('uint64'):  8,
-        np.dtype('float32'): 9,
-        np.dtype('float64'): 10
+        np.dtype('int8'):    (0, 8, 1),
+        np.dtype('uint8'):   (1, 8, 1),
+        np.dtype('int16'):   (0, 16, 1),
+        np.dtype('uint16'):  (1, 16, 1),
+        np.dtype('int32'):   (0, 32, 1),
+        np.dtype('uint32'):  (1, 32, 1),
+        np.dtype('int64'):   (0, 64, 1),
+        np.dtype('uint64'):  (1, 64, 1),
+        np.dtype('float32'): (2, 32, 1),
+        np.dtype('float64'): (2, 64, 1),
     }
 
     def __init__(self):
@@ -94,64 +91,75 @@ class TensorInspectorNode(Node):
                 f'Edited tensor will be loaded from {edited_tensor_npz_path}')
 
     def listener_callback(self, msg):
+        if len(msg.names) != len(msg.tensors):
+            self.get_logger().error(
+                f'Invalid tensor list: len(names)={len(msg.names)} '
+                f'!= len(tensors)={len(msg.tensors)}')
+            return
 
         if self.should_save_original:
             tensor_dict = {}
-            for tensor in msg.tensors:
-                dims = tensor.shape.dims
-                N = np.prod(dims)
+            for tensor_name, tensor in zip(msg.names, msg.tensors):
+                dims = tensor.shape
+                N = int(np.prod(dims))
                 self.get_logger().debug(
-                    f'Tensor {tensor.name} with dims {dims} has N={N} elements')
+                    f'Tensor {tensor_name} with dims {dims} has N={N} elements')
 
-                conversion = self.MSG_TO_PYTHON_MAP.get(tensor.data_type)
+                dtype = (tensor.dtype_code, tensor.dtype_bits, tensor.dtype_lanes)
+                conversion = self.MSG_TO_PYTHON_MAP.get(dtype)
                 if conversion is None:
                     self.get_logger().error(
-                        f'Original tensor {tensor.name} has unknown data type {tensor.data_type}')
+                        f'Original tensor {tensor_name} has unknown data type {dtype}')
                     continue
 
                 element_format, element_num_bytes = conversion
+                required_num_bytes = tensor.byte_offset + N * element_num_bytes
+                if required_num_bytes > len(tensor.data):
+                    self.get_logger().error(
+                        f'Original tensor {tensor_name} has invalid data size: '
+                        f'need {required_num_bytes}, got {len(tensor.data)}')
+                    continue
 
                 elements = []
                 for i in range(N):
                     # Interpret tensor fields as particular numeric type from bytes
+                    data_offset = tensor.byte_offset + element_num_bytes * i
                     element = struct.unpack(f'<{element_format}', tensor.data[
-                        element_num_bytes * i:
-                        element_num_bytes * (i + 1)
+                        data_offset:data_offset + element_num_bytes
                     ])[0]  # struct.unpack returns a tuple with one element
 
                     elements.append(element)
 
                 # Add element as numpy array to dictionary
-                tensor_dict[tensor.name] = np.resize(elements, dims)
+                tensor_dict[tensor_name] = np.resize(elements, dims)
 
             np.savez(self.original_tensor_npz_path, **tensor_dict)
             self.get_logger().debug('Saved original tensor')
 
         if self.should_edit:
+            names = []
             tensors = []
             for tensor_name, tensor_npz in self.edited_tensor_data.items():
                 # Create new tensor from data
-                tensor = Tensor()
-
-                tensor.name = tensor_name
-
-                tensor.shape.rank = len(tensor_npz.shape)
-                tensor.shape.dims = tensor_npz.shape
+                tensor = ExperimentalTensor()
+                tensor.shape = [int(dim) for dim in tensor_npz.shape]
 
                 element_data_type = self.PYTHON_TO_MSG_MAP.get(tensor_npz.dtype)
                 if element_data_type is None:
                     self.get_logger().error(
-                        f'Edited tensor {tensor.name} has unknown data type {tensor_npz.dtype}')
+                        f'Edited tensor {tensor_name} has unknown data type {tensor_npz.dtype}')
                     continue
 
-                tensor.data_type = element_data_type
-                tensor.strides = tensor_npz.strides
-
+                tensor.dtype_code, tensor.dtype_bits, tensor.dtype_lanes = element_data_type
+                tensor.strides = []
+                tensor.byte_offset = 0
                 tensor.data = tensor_npz.tobytes()
 
+                names.append(tensor_name)
                 tensors.append(tensor)
 
             # Overwrite original tensors with new tensors
+            msg.names = names
             msg.tensors = tensors
             self.get_logger().debug('Edited tensor')
 

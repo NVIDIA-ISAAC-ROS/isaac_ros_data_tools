@@ -2,15 +2,15 @@
   "header": {
     "frame_id": ""
   },
+  "names": ["test_tensor"],
   "tensors": [
     {
-      "name": "test_tensor",
-      "shape": {
-        "rank": 1,
-        "dims": [3]
-      },
-      "data_type": 9,
-      "strides": [4],
+      "dtype_code": 2,
+      "dtype_bits": 32,
+      "dtype_lanes": 1,
+      "shape": [3],
+      "strides": [],
+      "byte_offset": 0,
       "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     }
   ]

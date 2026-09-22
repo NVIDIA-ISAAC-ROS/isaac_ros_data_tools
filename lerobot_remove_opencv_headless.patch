@@ -1,0 +1,10 @@
+--- lerobot-0.3.2.dist-info/METADATA
++++ lerobot-0.3.2.dist-info/METADATA
+@@ -27,7 +27,6 @@ Requires-Dist: cmake>=3.29.0.1
+ Requires-Dist: cmake>=3.29.0.1
+ Requires-Dist: einops>=0.8.0
+-Requires-Dist: opencv-python-headless>=4.9.0
+ Requires-Dist: av>=14.2.0
+ Requires-Dist: torch>=2.2.1
+ Requires-Dist: torchcodec>=0.2.1; sys_platform != "win32" and (sys_platform != "linux" or (platform_machine != "aarch64" and platform_machine != "arm64" and platform_machine != "armv7l")) and (sys_platform != "darwin" or platform_machine != "x86_64")
+ Requires-Dist: torchvision>=0.21.0
