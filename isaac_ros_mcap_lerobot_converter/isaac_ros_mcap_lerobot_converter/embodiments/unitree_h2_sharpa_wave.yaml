@@ -1,0 +1,240 @@
+name: unitree_h2_sharpa_wave
+observations:
+  state.left_arm:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+  state.right_arm:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+  state.left_hand:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - left_sharpa_left_thumb_CMC_FE
+      - left_sharpa_left_thumb_CMC_AA
+      - left_sharpa_left_thumb_MCP_FE
+      - left_sharpa_left_thumb_MCP_AA
+      - left_sharpa_left_thumb_IP
+      - left_sharpa_left_index_MCP_FE
+      - left_sharpa_left_index_MCP_AA
+      - left_sharpa_left_index_PIP
+      - left_sharpa_left_index_DIP
+      - left_sharpa_left_middle_MCP_FE
+      - left_sharpa_left_middle_MCP_AA
+      - left_sharpa_left_middle_PIP
+      - left_sharpa_left_middle_DIP
+      - left_sharpa_left_ring_MCP_FE
+      - left_sharpa_left_ring_MCP_AA
+      - left_sharpa_left_ring_PIP
+      - left_sharpa_left_ring_DIP
+      - left_sharpa_left_pinky_CMC
+      - left_sharpa_left_pinky_MCP_FE
+      - left_sharpa_left_pinky_MCP_AA
+      - left_sharpa_left_pinky_PIP
+      - left_sharpa_left_pinky_DIP
+  state.right_hand:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - right_sharpa_right_thumb_CMC_FE
+      - right_sharpa_right_thumb_CMC_AA
+      - right_sharpa_right_thumb_MCP_FE
+      - right_sharpa_right_thumb_MCP_AA
+      - right_sharpa_right_thumb_IP
+      - right_sharpa_right_index_MCP_FE
+      - right_sharpa_right_index_MCP_AA
+      - right_sharpa_right_index_PIP
+      - right_sharpa_right_index_DIP
+      - right_sharpa_right_middle_MCP_FE
+      - right_sharpa_right_middle_MCP_AA
+      - right_sharpa_right_middle_PIP
+      - right_sharpa_right_middle_DIP
+      - right_sharpa_right_ring_MCP_FE
+      - right_sharpa_right_ring_MCP_AA
+      - right_sharpa_right_ring_PIP
+      - right_sharpa_right_ring_DIP
+      - right_sharpa_right_pinky_CMC
+      - right_sharpa_right_pinky_MCP_FE
+      - right_sharpa_right_pinky_MCP_AA
+      - right_sharpa_right_pinky_PIP
+      - right_sharpa_right_pinky_DIP
+  images.ego_view:
+    type: image
+    source_topic: /camera/color/image_compressed
+    element_names: [r, g, b]
+actions:
+  left_arm:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+  right_arm:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+  left_hand:
+    type: joint_position
+    source_topic: /xr_teleop/finger_joints
+    sync: causal_zoh
+    element_names:
+      - left_sharpa_left_thumb_CMC_FE
+      - left_sharpa_left_thumb_CMC_AA
+      - left_sharpa_left_thumb_MCP_FE
+      - left_sharpa_left_thumb_MCP_AA
+      - left_sharpa_left_thumb_IP
+      - left_sharpa_left_index_MCP_FE
+      - left_sharpa_left_index_MCP_AA
+      - left_sharpa_left_index_PIP
+      - left_sharpa_left_index_DIP
+      - left_sharpa_left_middle_MCP_FE
+      - left_sharpa_left_middle_MCP_AA
+      - left_sharpa_left_middle_PIP
+      - left_sharpa_left_middle_DIP
+      - left_sharpa_left_ring_MCP_FE
+      - left_sharpa_left_ring_MCP_AA
+      - left_sharpa_left_ring_PIP
+      - left_sharpa_left_ring_DIP
+      - left_sharpa_left_pinky_CMC
+      - left_sharpa_left_pinky_MCP_FE
+      - left_sharpa_left_pinky_MCP_AA
+      - left_sharpa_left_pinky_PIP
+      - left_sharpa_left_pinky_DIP
+  right_hand:
+    type: joint_position
+    source_topic: /xr_teleop/finger_joints
+    sync: causal_zoh
+    element_names:
+      - right_sharpa_right_thumb_CMC_FE
+      - right_sharpa_right_thumb_CMC_AA
+      - right_sharpa_right_thumb_MCP_FE
+      - right_sharpa_right_thumb_MCP_AA
+      - right_sharpa_right_thumb_IP
+      - right_sharpa_right_index_MCP_FE
+      - right_sharpa_right_index_MCP_AA
+      - right_sharpa_right_index_PIP
+      - right_sharpa_right_index_DIP
+      - right_sharpa_right_middle_MCP_FE
+      - right_sharpa_right_middle_MCP_AA
+      - right_sharpa_right_middle_PIP
+      - right_sharpa_right_middle_DIP
+      - right_sharpa_right_ring_MCP_FE
+      - right_sharpa_right_ring_MCP_AA
+      - right_sharpa_right_ring_PIP
+      - right_sharpa_right_ring_DIP
+      - right_sharpa_right_pinky_CMC
+      - right_sharpa_right_pinky_MCP_FE
+      - right_sharpa_right_pinky_MCP_AA
+      - right_sharpa_right_pinky_PIP
+      - right_sharpa_right_pinky_DIP
+  left_arm_effort:
+    type: joint_effort
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+  right_arm_effort:
+    type: joint_effort
+    source_topic: /applied_joint_commands
+    element_names:
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+  left_hand_effort:
+    type: joint_effort
+    value: zero
+    element_names:
+      - left_sharpa_left_thumb_CMC_FE
+      - left_sharpa_left_thumb_CMC_AA
+      - left_sharpa_left_thumb_MCP_FE
+      - left_sharpa_left_thumb_MCP_AA
+      - left_sharpa_left_thumb_IP
+      - left_sharpa_left_index_MCP_FE
+      - left_sharpa_left_index_MCP_AA
+      - left_sharpa_left_index_PIP
+      - left_sharpa_left_index_DIP
+      - left_sharpa_left_middle_MCP_FE
+      - left_sharpa_left_middle_MCP_AA
+      - left_sharpa_left_middle_PIP
+      - left_sharpa_left_middle_DIP
+      - left_sharpa_left_ring_MCP_FE
+      - left_sharpa_left_ring_MCP_AA
+      - left_sharpa_left_ring_PIP
+      - left_sharpa_left_ring_DIP
+      - left_sharpa_left_pinky_CMC
+      - left_sharpa_left_pinky_MCP_FE
+      - left_sharpa_left_pinky_MCP_AA
+      - left_sharpa_left_pinky_PIP
+      - left_sharpa_left_pinky_DIP
+  right_hand_effort:
+    type: joint_effort
+    value: zero
+    element_names:
+      - right_sharpa_right_thumb_CMC_FE
+      - right_sharpa_right_thumb_CMC_AA
+      - right_sharpa_right_thumb_MCP_FE
+      - right_sharpa_right_thumb_MCP_AA
+      - right_sharpa_right_thumb_IP
+      - right_sharpa_right_index_MCP_FE
+      - right_sharpa_right_index_MCP_AA
+      - right_sharpa_right_index_PIP
+      - right_sharpa_right_index_DIP
+      - right_sharpa_right_middle_MCP_FE
+      - right_sharpa_right_middle_MCP_AA
+      - right_sharpa_right_middle_PIP
+      - right_sharpa_right_middle_DIP
+      - right_sharpa_right_ring_MCP_FE
+      - right_sharpa_right_ring_MCP_AA
+      - right_sharpa_right_ring_PIP
+      - right_sharpa_right_ring_DIP
+      - right_sharpa_right_pinky_CMC
+      - right_sharpa_right_pinky_MCP_FE
+      - right_sharpa_right_pinky_MCP_AA
+      - right_sharpa_right_pinky_PIP
+      - right_sharpa_right_pinky_DIP
+  navigate_command:
+    type: vector
+    source_topic: /xr_teleop/root_twist
+    element_names: [linear_x, linear_y, angular_z]
+  base_height_command:
+    type: vector
+    source_topic: /xr_teleop/root_pose
+    element_names: [z]
+    default: [0.72]

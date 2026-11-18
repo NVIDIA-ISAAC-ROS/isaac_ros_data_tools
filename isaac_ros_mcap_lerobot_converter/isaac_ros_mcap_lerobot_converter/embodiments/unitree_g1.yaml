@@ -1,0 +1,205 @@
+name: unitree_g1
+observations:
+  state.left_leg:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_hip_yaw_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+  state.right_leg:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_hip_yaw_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+  state.waist:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - waist_yaw_joint
+      - waist_roll_joint
+      - waist_pitch_joint
+  state.left_arm:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+  state.right_arm:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+  state.left_hand:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - left_hand_thumb_0_joint
+      - left_hand_thumb_1_joint
+      - left_hand_thumb_2_joint
+      - left_hand_middle_0_joint
+      - left_hand_middle_1_joint
+      - left_hand_index_0_joint
+      - left_hand_index_1_joint
+  state.right_hand:
+    type: joint_position
+    source_topic: /joint_states
+    element_names:
+      - right_hand_thumb_0_joint
+      - right_hand_thumb_1_joint
+      - right_hand_thumb_2_joint
+      - right_hand_index_0_joint
+      - right_hand_index_1_joint
+      - right_hand_middle_0_joint
+      - right_hand_middle_1_joint
+  images.ego_view:
+    type: image
+    source_topic: /camera/color/image_compressed
+    element_names: [r, g, b]
+actions:
+  left_leg:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_hip_yaw_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+  right_leg:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_hip_yaw_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+  waist:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - waist_yaw_joint
+      - waist_roll_joint
+      - waist_pitch_joint
+  left_arm:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+  right_arm:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+  left_hand:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_hand_index_0_joint
+      - left_hand_index_1_joint
+      - left_hand_middle_0_joint
+      - left_hand_middle_1_joint
+      - left_hand_thumb_0_joint
+      - left_hand_thumb_1_joint
+      - left_hand_thumb_2_joint
+  right_hand:
+    type: joint_position
+    source_topic: /applied_joint_commands
+    element_names:
+      - right_hand_index_0_joint
+      - right_hand_index_1_joint
+      - right_hand_middle_0_joint
+      - right_hand_middle_1_joint
+      - right_hand_thumb_0_joint
+      - right_hand_thumb_1_joint
+      - right_hand_thumb_2_joint
+  effort:
+    type: joint_effort
+    source_topic: /applied_joint_commands
+    element_names:
+      - left_hip_pitch_joint
+      - left_hip_roll_joint
+      - left_hip_yaw_joint
+      - left_knee_joint
+      - left_ankle_pitch_joint
+      - left_ankle_roll_joint
+      - right_hip_pitch_joint
+      - right_hip_roll_joint
+      - right_hip_yaw_joint
+      - right_knee_joint
+      - right_ankle_pitch_joint
+      - right_ankle_roll_joint
+      - waist_yaw_joint
+      - waist_roll_joint
+      - waist_pitch_joint
+      - left_shoulder_pitch_joint
+      - left_shoulder_roll_joint
+      - left_shoulder_yaw_joint
+      - left_elbow_joint
+      - left_wrist_roll_joint
+      - left_wrist_pitch_joint
+      - left_wrist_yaw_joint
+      - right_shoulder_pitch_joint
+      - right_shoulder_roll_joint
+      - right_shoulder_yaw_joint
+      - right_elbow_joint
+      - right_wrist_roll_joint
+      - right_wrist_pitch_joint
+      - right_wrist_yaw_joint
+      - left_hand_index_0_joint
+      - left_hand_index_1_joint
+      - left_hand_middle_0_joint
+      - left_hand_middle_1_joint
+      - left_hand_thumb_0_joint
+      - left_hand_thumb_1_joint
+      - left_hand_thumb_2_joint
+      - right_hand_index_0_joint
+      - right_hand_index_1_joint
+      - right_hand_middle_0_joint
+      - right_hand_middle_1_joint
+      - right_hand_thumb_0_joint
+      - right_hand_thumb_1_joint
+      - right_hand_thumb_2_joint
+  navigate_command:
+    type: vector
+    source_topic: /xr_teleop/root_twist
+    element_names: [linear_x, linear_y, angular_z]
+  base_height_command:
+    type: vector
+    source_topic: /xr_teleop/root_pose
+    element_names: [z]
+    default: [0.75]
